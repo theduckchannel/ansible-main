@@ -49,4 +49,18 @@
         number: 2
         state: present
 
+    - name: Formatting
+      block:
+        - name: Formatting efi partition
+          filesystem:
+            dev: "{{efi_partition}}"
+            fstype: vfat
+            opts: -F32
+            force: yes
+
+        - name: Formatting system partition
+          filesystem:
+            dev: "{{system_partition}}"
+            fstype: btrfs
+            force: yes
 
