@@ -171,7 +171,7 @@
               
         - name: Create /etc/localeg.gen
           copy:
-            content: "{{language}} {{code}}"
+            content: "{{language}} {{code}}\r\n"
             dest: "/mnt/etc/locale.gen"  
 
         - name: locale-gen
@@ -182,18 +182,18 @@
 
         - name: /etc/locale.conf
           copy:
-            content: "LANG={{language}}"
+            content: "LANG={{language}}\r\n"
             dest: "/mnt/etc/locale.conf"  
 
         - name: /etc/vconsole.conf
           copy:
-            content: "KEYMAP={{keyboard_layout}}"
+            content: "KEYMAP={{keyboard_layout}}\r\n"
             dest: "/mnt/etc/vconsole.conf"  
 
 
         - name: Set hostname
           copy:
-            content: "{{hostname}}"
+            content: "{{hostname}}\r\n"
             dest: "/mnt/etc/hostname"  
 
 

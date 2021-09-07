@@ -11,7 +11,7 @@
   - name: Allow the 'aur_builder' user to run 'sudo pacman' without a password
     ansible.builtin.lineinfile:
       path: /etc/sudoers.d/11-install-aur_builder
-      line: 'ãur_buildr ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+      line: 'ãur_builer ALL=(ALL) NOPASSWD: /usr/bin/pacman'
       create: yes
       validate: 'visudo -cf %s'
 
