@@ -12,6 +12,7 @@
       language: "en_US.UTF-8"
       code: "UTF-8"
       keyboard_layout: "br-abnt2"
+      grub_gfx: "1920x1080"
   tasks:
     - name: Abort if the host is not booted from the Arch install media
       fail:
@@ -243,6 +244,46 @@
             - mkinitcpio
 
 
+        - name: /etc/default/grub (1)
+          ansible.builtin.lineinfile:
+            path: /mnt/etc/default/grub
+            regexp: '^GRUB_DEFAULT=0'
+            line: 'GRUB_DEFAULT=saved'
+
+        - name: /etc/default/grub (2)
+          ansible.builtin.lineinfile:
+            path: /mnt/etc/default/grub
+            regexp: '^GRUB_CMDLINE_LINUX_DEFAULT=.*'
+            line: 'GRUB_CMDLINE_LINUX_DEFAULT=""'
+             
+ 
+        - name: /etc/default/grub (3)
+          ansible.builtin.lineinfile:
+            path: /mnt/etc/default/grub
+            regexp: '^#GRUB_SAVEDEFAULT=true'
+            line: 'GRUB_SAVEDEFAULT=true'
+
+ 
+
+        - name: /etc/default/grub (4)
+          ansible.builtin.lineinfile:
+            path: /mnt/etc/default/grub
+            regexp: '^#GRUB_DISABLE_SUBMENU=y'
+            line: 'GRUB_DISABLE_SUBMENU=y'
+
+
+        - name: /etc/default/grub (5)
+          ansible.builtin.lineinfile:
+            path: /mnt/etc/default/grub
+            regexp: '^GRUB_GFXMODE=auto'
+            line: "GRUB_GFXMODE=\"{{grub_gfx}}\""
+
+        - name: Inserte os-prober line to grub
+          blockinfile:
+            path: /etc/default/grub
+            block: |
+              GRUB_DISABLE_OS_PROBER=false
+
         - name: Install grub
           shell: "{{chroot}} grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB"
           tags:
@@ -253,10 +294,6 @@
           shell: "{{chroot}} grub-mkconfig -o /boot/grub/grub.cfg"
           tags:
             - grub-mkconfig
-
-
-
-
 
 
 

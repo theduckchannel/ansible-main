@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+  - name: Create the 'aur_builder' user
+    ansible.builtin.user:
+      name: aur_builder
+      create_home: yes
+      group: wheel
+
