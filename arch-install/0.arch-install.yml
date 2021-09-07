@@ -14,6 +14,12 @@
       keyboard_layout: "br-abnt2"
       grub_gfx: "1920x1080"
   tasks:
+
+    - name: Find Current Dir 
+      shell: pwd
+      register: current_dir
+    - debug: var=current_dir.stdout
+
     - name: Abort if the host is not booted from the Arch install media
       fail:
         msg: "This host is not booted from the Arch install media!"
