@@ -106,7 +106,7 @@
 
 
         - name: Create Directories
-          shell: mkdir -p /mnt/{boot/efi,home,var}
+          shell: mkdir -p /mnt/{boot/efi,home,var,.snapshots}
           args:
             executable: /bin/bash
 
@@ -122,6 +122,13 @@
           args:
             executable: /bin/bash
 
+
+        - name: Mount @snapshots Subvolume
+          shell: mount -t btrfs -o "{{btrfs_options}}",subvol=@snapshots "{{system_partition}}" /mnt/.snapshots
+          args:
+            executable: /bin/bash
+
+              
 
         - name: Mount Efi Partition
           shell: mount "{{efi_partition}}" /mnt/boot/efi
