@@ -200,10 +200,7 @@
         - name: Insert data to hosts file
           blockinfile:
             path: /mnt/etc/hosts
-            block: "              
-              127.0.0.1   localhost\r\n
-              ::1         localhost\r\n
-              127.0.0.1   {{hostname}}.localdomain    {{hostname}}"
+            block: "127.0.0.1     localhost\r\n::1      localhost\r\n127.0.0.1      {{hostname}}.localdomain      {{hostname}}"
 
 
 
