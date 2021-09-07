@@ -306,5 +306,23 @@
     shell: snapper -c root create --description "Fresh Install"
 
 
+  - name: Create Resources Dir
+    shell: |
+      sudo mkdir /Resources
+      sudo chmod a+rw /Resources
+      sudo chown :wheel /Resources
+
+
+  - name: Edit fstab to mount /Resources
+    blockinfile:
+      path: /etc/fstab
+      block: |
+        UUID=2CFE46A1FE4662E6   /Resources    ntfs-3g uid=1000,gid=1000   0 0
+
+  - name: Mount /Resources
+    shell: sudo mount -a
+
+
+
 
 
