@@ -31,3 +31,15 @@
             - sgdisk
 
 
+
+	- name: Create a new ext4 primary partition
+
+	community.general.partedÇ
+
+    deviceÇ ;dev;sdb
+
+    numberÇ 1
+
+    stateÇ present
+
+    fs_typeÇ ext4
