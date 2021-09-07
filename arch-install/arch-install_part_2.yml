@@ -11,14 +11,19 @@
   - name: Allow the 'aur_builder' user to run 'sudo pacman' without a password
     ansible.builtin.lineinfile:
       path: /etc/sudoers.d/11-install-aur_builder
-      line: 'ãur_builderALL=(ALL) NOPASSWD: /usr/bin/pacman'
+      line: 'ãur_buildr ALL=(ALL) NOPASSWD: /usr/bin/pacman'
       create: yes
       validate: 'visudo -cf %s'
 
-  - name: /etc/pacman.conf (Color and ILoveCandy)
+  - name: /etc/pacman.conf (Color)
     ansible.builtin.lineinfile:
       path: /etc/pacman.conf
       regexp: '^#Color'
-      line: "Color\r\nILoveCandy"
+      line: 'Color'
 
+  - name: /etc/pacman.conf (ILoveCandy)
+    ansible.builtin.lineinfile:
+      path: /etc/pacman.conf
+      regexp: '^#NoProgressBar'
+      line: 'ILoveCandy'
 
