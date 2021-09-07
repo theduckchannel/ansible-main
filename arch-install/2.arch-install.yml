@@ -119,11 +119,85 @@
         - nvidia-utils 
         - nvidia-settings
         - grub-customizer
+        - bspwm
+        - sxhkd
+        - picom
+        - feh
+        - scrot
+        - wget
+        - mpd
+        - dunst
+        - libfm
+        - lxappearance
+        - xfce4-appfinder
+        - xfce4-panel
+        - xfce4-power-manager
+        - xfce4-session
+        - xfce4-settings
+        - xfce4-terminal
+        - xorg-fonts-misc
+        - adapta-gtk-theme
+        - papirus-icon-theme
+        - alacritty
+        - thunar
+        - raw-thumbnailer
+        - thunar-archive-plugin
+        - thunar-media-tags-plugin
+        - thunar-volman
+        - tumbler
+        - ffmpegthumbnailer
+        - pipewire
+        - pipewire-alsa
+        - pipewire-pulse
+        - pipewire-jack
+        - pavucontrol
+        - ttf-fira-code
+        - noto-fonts
+        - ttf-roboto
+        - leafpad
+        - neofetch
+        - firefox
+        - parted
+        - exa
+        - qpdfview
+        - curl
+        - gimp
+        - gthumb
+        - flameshot
+        - bpytop
+        - speedcrunch
+        - gvfs
+        - vlc
+        - hugo
+        - libfido2
+        - zoxide
+        - python-pygments
+        - seahorse
+        - yad
+        - qt5-styleplugins
+        - nerd-fonts-iosevka
+        - nerd-fonts-meslo
+        - siji-git
+        - ttf-unifont
+        - ttf-dejavu
+        - ttf-meslo-nerd-font-powerlevel10k
+        - polybar
+        - i3lock-color
+        - xfce-polkit
+        - ulauncher
+        - google-chrome
+        - chroma-bin
+        - vifm-git
+        - vifmimg-git
+        - vifm-colors-git
+        - vifm-devicons-git
+        - vim-vifm-git
+        - kotatogram-desktop-bin
+        - megasync         
       use: paru
       state: present
     become: yes
     become_user: aur_builder
-
 
 
 
