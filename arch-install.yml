@@ -158,13 +158,13 @@
 
 
         - name: Set Timezone
-          shell: "{{chroot}} ln -sf /usr/share/zoneinfo/{{timezone}}" /etc/localtime
+          shell: "{{chroot}} ln -sf /usr/share/zoneinfo/{{timezone}} /etc/localtime"
           tags:
-            - fstab
+            - set-timezone
 
 
         - name: hwclock
-          shell: "{{chroot}}" hwclock --systohc
+          shell: "{{chroot}} hwclock --systohc"
           tags:
             - hwclock
 
@@ -174,7 +174,7 @@
           dest: "/mnt/etc/locale.gen"  
 
         - name: locale-gen
-          shell: "{{chroot}}" locale-gen
+          shell: "{{chroot}} locale-gen"
           tags:
             - locale-gen
 
