@@ -103,5 +103,27 @@
       dest: /etc/X11/xorg.conf.d/
       follow: no
 
+  - name: Blacklist i2c nvidia
+    ansible.builtin.copy:
+      src: "{{current_dir.stdout}}/blacklist_i2c-nvidia-gpu.conf"
+      dest: /etc/modprobe.d/
+      follow: no
+
+
+  - name: Install Kernel TKG Cacule
+    kewlfft.aur.aur:
+      name: 
+        - linux-tkg-cacule
+        - linux-tkg-cacule-headers
+        - nvidia-dkms
+        - nvidia-utils 
+        - nvidia-settings
+        - grub-customizer
+      use: paru
+      state: present
+    become: yes
+    become_user: aur_builder
+
+
 
 
