@@ -19,3 +19,6 @@ Plug 'pearofducks/ansible-vim'
 
 "Initialize plugin system
 call plug#end()
+
+set fileencoding=utf-8
+set encoding=utf-8
