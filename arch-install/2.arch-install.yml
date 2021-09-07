@@ -233,7 +233,32 @@
       enabled: yes
 
 
+  - name: Config ntp
+    shell: |
+      sudo umount /.snapshots
+      sudo rm -rf /.snapshots
+      sudo snapper -c root create-config /
+      sudo btrfs subvolume delete /.snapshots
+      sudo mkdir /.snapshots
+      sudo chmod a+rx /.snapshots
+      sudo chmod 750 /.snapshots
+      sudo chown :wheel /.snapshots
+      
+      
+   - name: /etc/snapper/configs/root (Snapper Users)
+    ansible.builtin.lineinfile:
+      path: /etc/snapper/configs/root
+      regexp: '^#Color'
+      line: 'Color'
+     
+  #sudo vim /etc/snapper/configs/root
 
+
+
+  
+#sudo systemctl enable --now snapper-timeline.timer
+#sudo systemctl enable --now snapper-cleanup.timer
+#sudo systemctl enable --now grub-btrfs.path
 
 
 
