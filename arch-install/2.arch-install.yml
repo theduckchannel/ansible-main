@@ -7,6 +7,12 @@
     register: current_dir
   - debug: var=current_dir.stdout
 
+   - name: Get Username 
+    shell: whoami
+    register: username
+  - debug: var=username.stdout
+   
+
   - name: Create the 'aur_builder' user
     ansible.builtin.user:
       name: aur_builder
@@ -193,11 +199,39 @@
         - vifm-devicons-git
         - vim-vifm-git
         - kotatogram-desktop-bin
-        - megasync         
+        - megasync 
+        - snapper
+        - snapper-gui-git
+        - snap-pac-grub
+        - lxdm
       use: paru
       state: present
     become: yes
     become_user: aur_builder
+
+  - name: /etc/lxdm/lxdm.conf (autologin)
+    ansible.builtin.lineinfile:
+      path: /etc/lxdm/lxdm.conf
+      regexp: '^#autologin.*'
+      line: "autologin={{username.stdout}}"
+
+
+  - name: /etc/lxdm/lxdm.conf (numlock)
+    ansible.builtin.lineinfile:
+      path: /etc/lxdm/lxdm.conf
+      regexp: '^#numlock=.*'
+      line: "numlock=1"
+
+
+  - name: Enable lxdm
+    ansible.builtin.systemd:
+      name: lxdm.service
+      state: stopped
+      enabled: yes
+
+
+
+
 
 
 
