@@ -81,13 +81,12 @@
       state: started
       enabled: yes
 
-
   - name: Config ntp
     shell: |
       sudo timedatectl set-ntp true
       sudo timedatectl set-ntp on
 
-   - name: Enable ntp
+  - name: Enable ntp
     ansible.builtin.systemd:
       name: ntpd.service
       state: started
