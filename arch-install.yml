@@ -29,13 +29,24 @@
         - sgdisk
 
 
-    - name: Create EFI partitions
+    - name: Create EFI partition
       community.general.parted:
         device: "{{install_drive}}"
         name: EFI
         label: gpt
+        part_end: 512MiB
         flags: [boot, esp]  
         number: 1
         state: present
-        fs_type: fat32    
+
+
+    - name: Create System partition
+      community.general.parted:
+        device: "{{install_drive}}"
+        name: System
+        part_start: 512MiB
+        label: gpt
+        number: 2
+        state: present
+
 
