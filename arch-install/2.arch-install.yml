@@ -245,20 +245,65 @@
       sudo chown :wheel /.snapshots
       
       
-   - name: /etc/snapper/configs/root (Snapper Users)
+  - name: /etc/snapper/configs/root (Snapper Users)
     ansible.builtin.lineinfile:
       path: /etc/snapper/configs/root
-      regexp: '^#Color'
-      line: 'Color'
-     
-  #sudo vim /etc/snapper/configs/root
+      regexp: '^ALLOW_USERS=""'
+      line: "ALLOW_USERS=\"{{username.stdout}}\""
+ 
+
+  - name: /etc/snapper/configs/root (Snapper Limists for timeline cleanup 1)
+    ansible.builtin.lineinfile:
+      path: /etc/snapper/configs/root
+      regexp: '^TIMELINE_LIMIT_YEARLY.*'
+      line: 'TIMELINE_LIMIT_YEARLY="0"'
+ 
+  - name: /etc/snapper/configs/root (Snapper Limists for timeline cleanup 2)
+    ansible.builtin.lineinfile:
+      path: /etc/snapper/configs/root
+      regexp: '^TIMELINE_LIMIT_MONTHLY.*'
+      line: 'TIMELINE_LIMIT_MONTHLY="0"'
+
+  - name: /etc/snapper/configs/root (Snapper Limists for timeline cleanup 3)
+    ansible.builtin.lineinfile:
+      path: /etc/snapper/configs/root
+      regexp: '^TIMELINE_LIMIT_WEEKLY.*'
+      line: 'TIMELINE_LIMIT_WEEKLY="0"'
 
 
+  - name: /etc/snapper/configs/root (Snapper Limists for timeline cleanup 4)
+    ansible.builtin.lineinfile:
+      path: /etc/snapper/configs/root
+      regexp: '^TIMELINE_LIMIT_DAILY.*'
+      line: 'TIMELINE_LIMIT_DAILY="7"'
 
-  
-#sudo systemctl enable --now snapper-timeline.timer
-#sudo systemctl enable --now snapper-cleanup.timer
-#sudo systemctl enable --now grub-btrfs.path
+  - name: /etc/snapper/configs/root (Snapper Limists for timeline cleanup 5)
+    ansible.builtin.lineinfile:
+      path: /etc/snapper/configs/root
+      regexp: '^TIMELINE_LIMIT_HOURLY.*'
+      line: 'TIMELINE_LIMIT_HOURLY="5"'
+
+
+  - name: Enable snapper-timeline.timer
+    ansible.builtin.systemd:
+      name: snapper-timeline.timer
+      state: started
+      enabled: yes
+
+  - name: Enable snapper-cleanup.timer
+    ansible.builtin.systemd:
+      name: snapper-cleanup.timer
+      state: started
+      enabled: yes
+ 
+  - name: Enable grub-btrfs
+    ansible.builtin.systemd:
+      name: grub-btrfs.path
+      state: started
+      enabled: yes
+
+  - name: First Snapshot
+    shell: snapper -c root create --description "Fresh Install"
 
 
 
