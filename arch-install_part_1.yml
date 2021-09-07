@@ -203,6 +203,59 @@
             block: "127.0.0.1     localhost\r\n::1      localhost\r\n127.0.0.1      {{hostname}}.localdomain      {{hostname}}"
 
 
+        - name: Enable Network Manager
+          shell: "{{chroot}} systemctl enable NetworkManager"
+          tags:
+            - NetworkManager_service
+
+
+
+        - name: /etc/mkinitcpio.conf (Binaries)
+          ansible.builtin.lineinfile:
+            path: /mnt/etc/mkinitcpio.conf
+            regexp: '^BINARIES=()'
+            line: 'BINARIES=("/usr/bin/btrfs")'
+
+
+        - name: /etc/mkinitcpio.conf (Compression)
+          ansible.builtin.lineinfile:
+            path: /mnt/etc/mkinitcpio.conf
+            regexp: '^#COMPRESSION="lz4"'
+            line: 'COMPRESSION="lz4"'
+
+
+        - name: /etc/mkinitcpio.conf (Compression Options)
+          ansible.builtin.lineinfile:
+            path: /mnt/etc/mkinitcpio.conf
+            regexp: '^#COMPRESSION_OPTIONS=()'
+            line: 'COMPRESSION_OPTIONS=(-9)'
+
+        - name: /etc/mkinitcpio.conf (Modules)
+          ansible.builtin.lineinfile:
+            path: /mnt/etc/mkinitcpio.conf
+            regexp: '^MODULES=()'
+            line: 'MODULES=(btrfs)'
+
+
+        - name: mkinitcpio -p linux
+          shell: "{{chroot}} mkinitcpio -p linux"
+          tags:
+            - mkinitcpio
+
+
+        - name: Install grub
+          shell: "{{chroot}} grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB"
+          tags:
+            - grub-install
+
+
+        - name: Update grub
+          shell: "{{chroot}} grub-mkconfig -o /boot/grub/grub.cfg"
+          tags:
+            - grub-mkconfig
+
+
+
 
 
 
