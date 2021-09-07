@@ -270,7 +270,6 @@
             line: 'GRUB_SAVEDEFAULT=true'
 
  
-
         - name: /etc/default/grub (4)
           ansible.builtin.lineinfile:
             path: /mnt/etc/default/grub
@@ -284,11 +283,6 @@
             regexp: '^GRUB_GFXMODE=auto'
             line: "GRUB_GFXMODE=\"{{grub_gfx}}\""
 
-        - name: Install grub theme
-          copy:
-            src: ~/sample.txt
-            dest: /tmp 
-            force: no              
 
         - name: Inserte os-prober line to grub
           blockinfile:
@@ -296,6 +290,12 @@
             block: |
               GRUB_DISABLE_OS_PROBER=false
 
+
+        - name: Install grub Theme - Cyberpunk
+          ansible.posix.synchronize:
+            src: "{{current_dir.stdout}}/Cyberpunk"
+            dest: /boot/grub/themes/
+              
         - name: Install grub
           shell: "{{chroot}} grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB"
           tags:
