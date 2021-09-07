@@ -144,6 +144,7 @@
 
         - name: Install base System
           command: pacstrap /mnt base base-devel linux linux-firmware amd-ucode btrfs-progs git go zstd networkmanager openssh grub grub-btrfs efibootmgr dosfstools mtools os-prober ntfs-3g zsh zsh-completions xdg-user-dirs pbzip2 unrar lzop p7zip man network-manager-applet compsize reflector rsync vim sudo wget mlocate unzip 
+          debugger: always
           tags:
             - pacstrap
 
