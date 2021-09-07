@@ -19,27 +19,20 @@
       command: timedatectl set-ntp true
       tags:
         - sync_clock
-    - name: Repartition install drive
-      block:
-        - name: Wipe all partitions
-          command: wipefs --force --all "{{install_drive}}"
-          tags:
-            - wipefs
-        - name: Zap all partitions
-          command: sgdisk -Z "{{install_drive}}"
-          tags:
-            - sgdisk
+    - name: Wipe all partitions
+      command: wipefs --force --all "{{install_drive}}"
+      tags:
+        - wipefs
+    - name: Zap all partitions
+      command: sgdisk -Z "{{install_drive}}"
+      tags:
+        - sgdisk
 
 
+    - name: Create EFI partitions
+      community.general.parted:
+        device: "{{install_drive}}"
+        number: 1
+        stater: present
+        fs_type: fat32    
 
-	- name: Create a new ext4 primary partition
-
-	community.general.partedÇ
-
-    deviceÇ ;dev;sdb
-
-    numberÇ 1
-
-    stateÇ present
-
-    fs_typeÇ ext4
