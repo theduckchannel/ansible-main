@@ -10,3 +10,12 @@ set expandtab
 syntax on
 filetype plugin indent on
 color darkblue
+
+call plug#begin('~/.vim/plugged')
+
+
+Plug 'pearofducks/ansible-vim'
+
+
+"Initialize plugin system
+call plug#end()
