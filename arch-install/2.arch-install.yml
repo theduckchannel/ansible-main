@@ -7,7 +7,7 @@
     register: current_dir
   - debug: var=current_dir.stdout
 
-   - name: Get Username 
+  - name: Get Username 
     shell: whoami
     register: username
   - debug: var=username.stdout
