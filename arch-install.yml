@@ -1,0 +1,46 @@
+---
+- hosts: localhost
+  vars: 
+      install_drive: /dev/sda
+      efi_partition: /dev/sda1
+      system_partition: /dev/sda2
+      hostname: duckbox
+      timezone: America/Sao_Paulo
+  tasks:
+    - name: Abort if the host is not booted from the Arch install media
+      fail:
+        msg: "This host is not booted from the Arch install media!"
+      when: ansible_nodename != 'archiso'
+      tags:
+        - quick_exit
+    - name: Load my keyboard Layout
+      command: loadkeys br-abnt2
+    - name: Synchronize clock via NTP
+      command: timedatectl set-ntp true
+      tags:
+        - sync_clock
+    - name: Repartition install drive
+      block:
+        - name: Wipe all partitions
+          command: wipefs --force --all "{{install_drive}}" \;
+          tags:
+            - wipefs
+        - name: Create efi partition
+          parted:
+            device: "{{ install_drive }}"
+            label: gpt
+            number: 1
+            part_end: 512MB
+            name: efi
+            flags: [esp]
+            state: present
+        - name: Create root partition
+          parted:
+            device: "{{ install_drive }}"
+            label: gpt
+            number: 2
+            part_start: 512MB
+            name: root
+            flags: [lvm]
+            state: present
+
