@@ -28,4 +28,19 @@
       line: 'ILoveCandy'
 
 
-
+  # Note: Dependency resolution will still include repository packages.
+  - name: Upgrade the system using paru
+    kewlfft.aur.aur:
+      upgrade: yes
+      use: paru
+      aur_only: no
+    become: yes
+    become_user: aur_builder
+  # Skip if it is already installed
+  - name: Install Xorg
+    kewlfft.aur.aur:
+      name: xorg
+      use: paru
+      state: present
+    become: yes
+    become_user: aur_builder
