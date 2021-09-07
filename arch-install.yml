@@ -148,7 +148,7 @@
             - pacstrap
 
         - name: Generate fstab 
-          command: genfstab -U /mnt >> /mnt/etc/fstab
+          shell: genfstab -U /mnt>>/mnt/etc/fstab
           tags:
             - fstab
 
