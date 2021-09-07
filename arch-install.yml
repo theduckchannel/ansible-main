@@ -33,6 +33,6 @@
       community.general.parted:
         device: "{{install_drive}}"
         number: 1
-        stater: present
+        state: present
         fs_type: fat32    
 
