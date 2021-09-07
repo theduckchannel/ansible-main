@@ -201,8 +201,8 @@
           blockinfile:
             path: /mnt/etc/hosts
             block: "              
-              127.0.0.1   localhost
-              ::1         localhost
+              127.0.0.1   localhost\r\n
+              ::1         localhost\r\n
               127.0.0.1   {{hostname}}.localdomain    {{hostname}}"
 
 
