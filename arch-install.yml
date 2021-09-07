@@ -64,3 +64,15 @@
             fstype: btrfs
             force: yes
 
+
+    - name: Mounting Filesystems
+      block:
+        - name: Mount System Partition
+          mount:
+            path: /mnt
+            src: "{{system_partition}}"
+            opts: rw
+            fstype: btrfs
+            state: present
+
+
