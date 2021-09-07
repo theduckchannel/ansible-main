@@ -8,6 +8,10 @@
       timezone: America/Sao_Paulo
       btrfs_options: ssd,noatime,compress-force=zstd:5,discard=async,autodefrag,space_cache=v2,commit=120
       nodev_options: nodev,nosuid,noexec
+      chroot: arch-chroot /mnt
+      language: en_US.UTF-8
+      code: UTF-8
+      keyboard_layout: br-abnt2
   tasks:
     - name: Abort if the host is not booted from the Arch install media
       fail:
@@ -151,6 +155,56 @@
           shell: genfstab -U /mnt>>/mnt/etc/fstab
           tags:
             - fstab
+
+
+        - name: Set Timezone
+          shell: "{{chroot}} ln -sf /usr/share/zoneinfo/{{timezone}}" /etc/localtime
+          tags:
+            - fstab
+
+
+        - name: hwclock
+          shell: "{{chroot}}" hwclock --systohc
+          tags:
+            - hwclock
+
+              
+        - name: Create /etc/localeg.gen
+          content: "{{language}} {{code}}"
+          dest: "/mnt/etc/locale.gen"  
+
+        - name: locale-gen
+          shell: "{{chroot}}" locale-gen
+          tags:
+            - locale-gen
+
+
+        - name: /etc/locale.conf
+          content: "LANG={{language}}"
+          dest: "/mnt/etc/locale.conf"  
+
+        - name: /etc/vconsole.conf
+          content: "KEYMAP={{keyboard_layout}}"
+          dest: "/mnt/etc/vconsole.conf"  
+
+
+        - name: Set hostname
+          content: "{{hostname}}"
+          dest: "/mnt/etc/hostname"  
+
+
+
+        - name: Insert data to hosts file
+          blockinfile:
+            path: /mnt/etc/hosts
+            block: |
+              127.0.0.1   localhost
+              ::1         localhost
+              127.0.0.1   "{{hostname}}".localdomain    "{{hostname}}"
+
+
+
+
 
 
 
