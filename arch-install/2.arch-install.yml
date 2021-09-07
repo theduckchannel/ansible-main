@@ -204,6 +204,9 @@
         - snapper-gui-git
         - snap-pac-grub
         - lxdm
+        - noto-fonts-emoji
+        - powerline-fonts
+        - noto-color-emoji-fontconfig
       use: paru
       state: present
     become: yes
