@@ -2,6 +2,11 @@
 - hosts: localhost
   become: yes
   tasks:
+  - name: Find Current Dir 
+    shell: pwd
+    register: current_dir
+  - debug: var=current_dir.stdout
+
   - name: Create the 'aur_builder' user
     ansible.builtin.user:
       name: aur_builder
@@ -92,3 +97,11 @@
       state: started
       enabled: yes
      
+  - name: Config xorg Keyboard
+    ansible.builtin.copy:
+      src: "{{current_dir.stdout}}/00-keyboard.conf"
+      dest: /etc/X11/xorg.conf.d/
+      follow: no
+
+
+
