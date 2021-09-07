@@ -2,9 +2,24 @@
 - hosts: localhost
   become: yes
   tasks:
-  - name: /etc/pacman.conf (Color)
+  - name: Create the 'aur_builder' user
+    ansible.builtin.user:
+      name: aur_builder
+      create_home: yes
+      group: wheel
+
+  - name: Allow the 'aur_builder' user to run 'sudo pacman' without a password
+    ansible.builtin.lineinfile:
+      path: /etc/sudoers.d/11-install-aur_builder
+      line: 'ãur_builder ALL=(ALL) NOPASSW: /usr/bin/pacman'
+      create: yes
+      validate: 'visudo -cf %s'
+
+  - name: /etc/pacman.conf (Color and ILoveCandy)
     ansible.builtin.lineinfile:
       path: /etc/pacman.conf
       regexp: '^#Color'
-      line: 'Color'
+      line: "Color\r\nILoveCandy"
+  -name: clone Paru AUR Helper
+  shell: git clone 
 
