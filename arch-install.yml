@@ -92,6 +92,13 @@
           args:
             executable: /bin/bash
 
+
+        - name: Create subvolume @snapshots
+          shell: btrfs su cr /mnt/@snapshots
+          args:
+            executable: /bin/bash
+
+
         - name: Umount System Partition
           shell: umount  /mnt
           args:
@@ -128,7 +135,6 @@
           args:
             executable: /bin/bash
 
-              
 
         - name: Mount Efi Partition
           shell: mount "{{efi_partition}}" /mnt/boot/efi
@@ -136,7 +142,16 @@
             executable: /bin/bash
 
 
+        - name: Install base System
+          command: pacstrap /mnt base base-devel linux linux-firmware amd-ucode btrfs-progs git go zstd networkmanager openssh grub grub-btrfs efibootmgr dosfstools mtools os-prober ntfs-3g zsh zsh-completions xdg-user-dirs pbzip2 unrar lzop p7zip man network-manager-applet compsize reflector rsync vim sudo wget mlocate unzip 
+          tags:
+            - pacstrap
 
+
+        - name: Generate fstab 
+          command: genfstab -U /mnt >> /mnt/etc/fstab
+          tags:
+            - fstab
 
 
 
