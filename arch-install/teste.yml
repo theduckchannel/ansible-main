@@ -9,34 +9,34 @@
 
 
     - name: /etc/default/grub (1)
-        ansible.builtin.lineinfile:
-          path: /mnt/etc/default/grub
+      ansible.builtin.lineinfile:
+          path: /etc/default/grub
           regexp: '^GRUB_DEFAULT=0'
           line: 'GRUB_DEFAULT=saved'
 
     - name: /etc/default/grub (2)
-        ansible.builtin.lineinfile:
-          path: /mnt/etc/default/grub
+      ansible.builtin.lineinfile:
+          path: /etc/default/grub
           regexp: '^GRUB_CMDLINE_LINUX_DEFAULT=.*'
           line: 'GRUB_CMDLINE_LINUX_DEFAULT=""'
          
 
     - name: /etc/default/grub (3)
       ansible.builtin.lineinfile:
-        path: /mnt/etc/default/grub
+        path: /etc/default/grub
         regexp: '^#GRUB_SAVEDEFAULT=true'
         line: 'GRUB_SAVEDEFAULT=true'
 
 
     - name: /etc/default/grub (4)
       ansible.builtin.lineinfile:
-        path: /mnt/etc/default/grub
+        path: /etc/default/grub
         regexp: '^#GRUB_DISABLE_SUBMENU=y'
         line: 'GRUB_DISABLE_SUBMENU=y'
 
     - name: /etc/default/grub (5)
       ansible.builtin.lineinfile:
-        path: /mnt/etc/default/grub
+        path: /etc/default/grub
         regexp: '^GRUB_GFXMODE=auto'
         line: "GRUB_GFXMODE=\"{{grub_gfx}}\""
 
