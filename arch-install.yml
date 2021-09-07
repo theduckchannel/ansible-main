@@ -32,6 +32,9 @@
     - name: Create EFI partitions
       community.general.parted:
         device: "{{install_drive}}"
+        name: EFI
+        label: gpt
+        flags: [boot, esp]  
         number: 1
         state: present
         fs_type: fat32    
