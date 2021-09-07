@@ -1,9 +1,10 @@
 ---
 - hosts: localhost
+  become: yes
   tasks:
-  - name: /etc/pacman.conf
+  - name: /etc/pacman.conf (Color)
     ansible.builtin.lineinfile:
       path: /etc/pacman.conf
       regexp: '^#Color'
-      line: 'MODULES=(btrfs)'
+      line: 'Color'
 
