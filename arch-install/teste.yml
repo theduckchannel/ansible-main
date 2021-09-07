@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Find out playbook's path
+      shell: pwd
+      register: current_dir
+    - debug: var=current_dir.stdout

@@ -278,6 +278,12 @@
             regexp: '^GRUB_GFXMODE=auto'
             line: "GRUB_GFXMODE=\"{{grub_gfx}}\""
 
+        - name: Install grub theme
+          copy:
+            src: ~/sample.txt
+            dest: /tmp 
+            force: no              
+
         - name: Inserte os-prober line to grub
           blockinfile:
             path: /etc/default/grub
