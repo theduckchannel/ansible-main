@@ -37,10 +37,59 @@
     become: yes
     become_user: aur_builder
   # Skip if it is already installed
-  - name: Install Xorg
+  - name: Installing xorg, zramd,ntp and cronie
     kewlfft.aur.aur:
-      name: xorg
+      name: 
+        - xorg
+        - zramd
+        - ntp
+        - cronie
       use: paru
       state: present
     become: yes
     become_user: aur_builder
+
+  - name: /etc/default/zramd (1)
+    ansible.builtin.lineinfile:
+      path: /etc/default/zramd
+      regexp: '^# ALGORITHM=zstd'
+      line: 'ALGORITHM=zstd'
+
+
+  - name: /etc/default/zramd (2)
+    ansible.builtin.lineinfile:
+      path: /etc/default/zramd
+      regexp: '^# MAX_SIZE=8192'
+      line: 'MAX_SIZE=512'
+
+  - name: /etc/default/zramd (3)
+    ansible.builtin.lineinfile:
+      path: /etc/default/zramd
+      regexp: '^# NUM_DEVICES=1'
+      line: 'NUM_DEVICES=1'
+
+  - name: Enable zramd
+    ansible.builtin.systemd:
+      name: zramd.service
+      state: started
+      enabled: yes
+
+
+  - name: Enable cronie
+    ansible.builtin.systemd:
+      name: cronie.service
+      state: started
+      enabled: yes
+
+
+  - name: Config ntp
+    shell: |
+      sudo timedatectl set-ntp true
+      sudo timedatectl set-ntp on
+
+   - name: Enable ntp
+    ansible.builtin.systemd:
+      name: ntpd.service
+      state: started
+      enabled: yes
+     
