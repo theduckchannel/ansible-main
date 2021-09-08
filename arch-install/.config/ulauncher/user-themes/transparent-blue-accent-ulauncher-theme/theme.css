@@ -1,0 +1,114 @@
+/**
+ * Oceanic Next colors, taken from
+ * https://github.com/mhartington/oceanic-next
+ */
+@define-color on-black  #1b2b34;
+@define-color on-grey0  #343d46;
+@define-color on-grey1  #4f5b66;
+@define-color on-grey2  #65737e;
+@define-color on-grey3  #a7adba;
+@define-color on-white0 #c0c5ce;
+@define-color on-white1 #cdd3de;
+@define-color on-white2 #d8dee9;
+@define-color on-white3 #ffffff;
+@define-color on-red    #ec5f67;
+@define-color on-orange #f99157;
+@define-color on-yellow #fac863;
+@define-color on-green  #99c794;
+@define-color on-teal   #62b3b2;
+@define-color on-blue   #137e9c;
+@define-color on-violet #ba1c93;
+@define-color on-brown  #ab7967;
+
+/**
+ * Ulauncher theme modified from the default dark theme
+ */
+
+/**
+ * App Window
+ */
+@define-color bg_color rgba(0, 0, 0, 0.8);
+@define-color window_bg @bg_color;
+@define-color window_border_color @on-blue;
+@define-color prefs_backgroud @on-grey3;
+
+/**
+ * Input
+ */
+@define-color selected_bg_color @on-black;
+@define-color selected_fg_color @on-blue;
+@define-color input_color @on-violet;
+@define-color caret_color darker(@input_color); 
+
+/**
+ * Result items
+ */
+@define-color item_name @on-grey2;
+@define-color item_text @on-grey2;
+@define-color item_box_selected @on-black;
+@define-color item_text_selected @on-blue;
+@define-color item_name_selected @on-blue;
+@define-color item_shortcut_color @on-grey3;
+@define-color item_shortcut_shadow darker(@bg_color);
+@define-color item_shortcut_color_sel @on-white1;
+@define-color item_shortcut_shadow_sel darker(@item_box_selected);
+
+.app {
+    transition: all ease-in 1s;
+    background-color: @window_bg;
+    border-color: @window_border_color;
+    border-width: 2px;
+    background-image:url("./blur.png");
+    background-size: 120% 130%;
+    background-position: center -60px;
+    box-shadow: 0px 0px 5px 10px rgba(0,0,0,0.4);
+    background-repeat: no-repeat;
+}
+
+.input {
+    color: @input_color;
+}
+
+/**
+ * Selected text in input
+ */
+.input *:selected,
+.input *:focus,
+*:selected:focus {
+    background-color: alpha (@selected_bg_color, 0.9);
+    color: @selected_fg_color;
+}
+
+.item-text {
+    color: @item_text;
+}
+.item-name {
+    color: @item_name;
+}
+
+.selected.item-box {
+    background-color: @item_box_selected;
+    border-left: 1px solid @window_border_color;
+    border-right: 1px solid @window_border_color;
+}
+.selected.item-box .item-text {
+    color: @item_text_selected;
+}
+.selected.item-box .item-name {
+    color: @item_name_selected;
+}
+.item-shortcut {
+    color: @item_shortcut_color;
+    text-shadow: 1px 1px 1px @item_shortcut_shadow;
+}
+.selected.item-box .item-shortcut {
+    color: @item_shortcut_color_sel;
+    text-shadow: 1px 1px 1px @item_shortcut_shadow_sel;
+}
+
+.prefs-btn {
+    opacity: 0.8;
+}
+.prefs-btn:hover {
+    background-color: @prefs_backgroud;
+}

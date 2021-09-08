@@ -1,0 +1,349 @@
+---
+- hosts: localhost
+  become: yes
+  vars:
+    is_virtual_machine: true
+  tasks:
+  - name: Find Current Dir 
+    shell: pwd
+    register: current_dir
+  - debug: var=current_dir.stdout
+
+  - name: Get Username 
+    become: no
+    shell: whoami
+    register: username
+  - debug: var=username.stdout
+   
+
+  - name: Create the 'aur_builder' user
+    ansible.builtin.user:
+      name: aur_builder
+      create_home: yes
+      group: wheel
+
+  - name: Allow the 'aur_builder' user to run 'sudo pacman' without a password
+    ansible.builtin.lineinfile:
+      path: /etc/sudoers.d/11-install-aur_builder
+      line: 'ãur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+      create: yes
+      validate: 'visudo -cf %s'
+
+  - name: /etc/pacman.conf (Color)
+    ansible.builtin.lineinfile:
+      path: /etc/pacman.conf
+      regexp: '^#Color'
+      line: 'Color'
+
+  - name: /etc/pacman.conf (ILoveCandy)
+    ansible.builtin.lineinfile:
+      path: /etc/pacman.conf
+      regexp: '^#NoProgressBar'
+      line: 'ILoveCandy'
+
+
+  # Note: Dependency resolution will still include repository packages.
+  - name: Upgrade the system using paru
+    kewlfft.aur.aur:
+      upgrade: yes
+      use: paru
+      aur_only: no
+    become: yes
+    become_user: aur_builder
+  # Skip if it is already installed
+  - name: Installing xorg, zramd,ntp and cronie
+    kewlfft.aur.aur:
+      name: 
+        - xorg
+        - zramd
+        - ntp
+        - cronie
+      use: paru
+      state: present
+    become: yes
+    become_user: aur_builder
+
+  - name: /etc/default/zramd (1)
+    ansible.builtin.lineinfile:
+      path: /etc/default/zramd
+      regexp: '^# ALGORITHM=zstd'
+      line: 'ALGORITHM=zstd'
+
+
+  - name: /etc/default/zramd (2)
+    ansible.builtin.lineinfile:
+      path: /etc/default/zramd
+      regexp: '^# MAX_SIZE=8192'
+      line: 'MAX_SIZE=512'
+
+  - name: /etc/default/zramd (3)
+    ansible.builtin.lineinfile:
+      path: /etc/default/zramd
+      regexp: '^# NUM_DEVICES=1'
+      line: 'NUM_DEVICES=1'
+
+  - name: Enable zramd
+    ansible.builtin.systemd:
+      name: zramd.service
+      state: started
+      enabled: yes
+
+
+  - name: Enable cronie
+    ansible.builtin.systemd:
+      name: cronie.service
+      state: started
+      enabled: yes
+      when: not is_virtual_machine
+
+  - name: Config ntp
+    shell: |
+      sudo timedatectl set-ntp true
+      sudo timedatectl set-ntp on
+
+  - name: Enable ntp
+    ansible.builtin.systemd:
+      name: ntpd.service
+      state: started
+      enabled: yes
+     
+  - name: Config xorg Keyboard
+    ansible.builtin.copy:
+      src: "{{current_dir.stdout}}/00-keyboard.conf"
+      dest: /etc/X11/xorg.conf.d/
+      follow: no
+
+  - name: Blacklist i2c nvidia
+    ansible.builtin.copy:
+      src: "{{current_dir.stdout}}/blacklist_i2c-nvidia-gpu.conf"
+      dest: /etc/modprobe.d/
+      follow: no
+      when: not is_virtual_machine
+
+
+  - name: Install Serveral Packages
+    kewlfft.aur.aur:
+      name: 
+        - linux-tkg-cacule
+        - linux-tkg-cacule-headers
+        - nvidia-dkms
+        - nvidia-utils 
+        - nvidia-settings
+        - grub-customizer
+        - bspwm
+        - sxhkd
+        - picom
+        - feh
+        - scrot
+        - wget
+        - mpd
+        - dunst
+        - libfm
+        - lxappearance
+        - xfce4-appfinder
+        - xfce4-panel
+        - xfce4-power-manager
+        - xfce4-session
+        - xfce4-settings
+        - xfce4-terminal
+        - xorg-fonts-misc
+        - adapta-gtk-theme
+        - papirus-icon-theme
+        - alacritty
+        - thunar
+        - raw-thumbnailer
+        - thunar-archive-plugin
+        - thunar-media-tags-plugin
+        - thunar-volman
+        - tumbler
+        - ffmpegthumbnailer
+        - pipewire
+        - pipewire-alsa
+        - pipewire-pulse
+        - pipewire-jack
+        - pavucontrol
+        - ttf-fira-code
+        - noto-fonts
+        - ttf-roboto
+        - leafpad
+        - neofetch
+        - firefox
+        - parted
+        - exa
+        - qpdfview
+        - curl
+        - gimp
+        - gthumb
+        - flameshot
+        - bpytop
+        - speedcrunch
+        - gvfs
+        - vlc
+        - hugo
+        - libfido2
+        - zoxide
+        - python-pygments
+        - seahorse
+        - yad
+        - qt5-styleplugins
+        - nerd-fonts-iosevka
+        - nerd-fonts-meslo
+        - siji-git
+        - ttf-unifont
+        - ttf-dejavu
+        - ttf-meslo-nerd-font-powerlevel10k
+        - polybar
+        - i3lock-color
+        - xfce-polkit
+        - ulauncher
+        - google-chrome
+        - chroma-bin
+        - vifm-git
+        - vifmimg-git
+        - vifm-colors-git
+        - vifm-devicons-git
+        - vim-vifm-git
+        - kotatogram-desktop-bin
+        - megasync 
+        - snapper
+        - snapper-gui-git
+        - snap-pac-grub
+        - lxdm
+        - noto-fonts-emoji
+        - powerline-fonts
+        - noto-color-emoji-fontconfig
+      use: paru
+      state: present
+    become: yes
+    become_user: aur_builder
+
+
+  - name: Install Nvidia Driver
+    kewlfft.aur.aur:
+      name: 
+        - nvidia-dkms
+        - nvidia-utils 
+        - nvidia-settings
+      use: paru
+      state: present
+    become: yes
+    become_user: aur_builder
+    when: not is_virtual_machine
+
+
+  - name: /etc/lxdm/lxdm.conf (autologin)
+    ansible.builtin.lineinfile:
+      path: /etc/lxdm/lxdm.conf
+      regexp: '^# autologin=.*'
+      line: "autologin={{username.stdout}}"
+
+
+  - name: /etc/lxdm/lxdm.conf (numlock)
+    ansible.builtin.lineinfile:
+      path: /etc/lxdm/lxdm.conf
+      regexp: '^# numlock=.*'
+      line: "numlock=1"
+
+
+  - name: Enable lxdm
+    ansible.builtin.systemd:
+      name: lxdm.service
+      state: stopped
+      enabled: yes
+
+
+  - name: Config ntp
+    shell: |
+      sudo umount /.snapshots
+      sudo rm -rf /.snapshots
+      sudo snapper -c root create-config /
+      sudo btrfs subvolume delete /.snapshots
+      sudo mkdir /.snapshots
+      sudo chmod a+rx /.snapshots
+      sudo chmod 750 /.snapshots
+      sudo chown :wheel /.snapshots
+      
+      
+  - name: /etc/snapper/configs/root (Snapper Users)
+    ansible.builtin.lineinfile:
+      path: /etc/snapper/configs/root
+      regexp: '^ALLOW_USERS=""'
+      line: "ALLOW_USERS=\"{{username.stdout}}\""
+ 
+
+  - name: /etc/snapper/configs/root (Snapper Limists for timeline cleanup 1)
+    ansible.builtin.lineinfile:
+      path: /etc/snapper/configs/root
+      regexp: '^TIMELINE_LIMIT_YEARLY.*'
+      line: 'TIMELINE_LIMIT_YEARLY="0"'
+ 
+  - name: /etc/snapper/configs/root (Snapper Limists for timeline cleanup 2)
+    ansible.builtin.lineinfile:
+      path: /etc/snapper/configs/root
+      regexp: '^TIMELINE_LIMIT_MONTHLY.*'
+      line: 'TIMELINE_LIMIT_MONTHLY="0"'
+
+  - name: /etc/snapper/configs/root (Snapper Limists for timeline cleanup 3)
+    ansible.builtin.lineinfile:
+      path: /etc/snapper/configs/root
+      regexp: '^TIMELINE_LIMIT_WEEKLY.*'
+      line: 'TIMELINE_LIMIT_WEEKLY="0"'
+
+
+  - name: /etc/snapper/configs/root (Snapper Limists for timeline cleanup 4)
+    ansible.builtin.lineinfile:
+      path: /etc/snapper/configs/root
+      regexp: '^TIMELINE_LIMIT_DAILY.*'
+      line: 'TIMELINE_LIMIT_DAILY="7"'
+
+  - name: /etc/snapper/configs/root (Snapper Limists for timeline cleanup 5)
+    ansible.builtin.lineinfile:
+      path: /etc/snapper/configs/root
+      regexp: '^TIMELINE_LIMIT_HOURLY.*'
+      line: 'TIMELINE_LIMIT_HOURLY="5"'
+
+
+  - name: Enable snapper-timeline.timer
+    ansible.builtin.systemd:
+      name: snapper-timeline.timer
+      state: started
+      enabled: yes
+
+  - name: Enable snapper-cleanup.timer
+    ansible.builtin.systemd:
+      name: snapper-cleanup.timer
+      state: started
+      enabled: yes
+ 
+  - name: Enable grub-btrfs
+    ansible.builtin.systemd:
+      name: grub-btrfs.path
+      state: started
+      enabled: yes
+
+  - name: First Snapshot
+    shell: snapper -c root create --description "Fresh Install"
+
+
+  - name: Create Resources Dir
+    shell: |
+      sudo mkdir /Resources
+      sudo chmod a+rw /Resources
+      sudo chown :wheel /Resources
+
+
+  - name: Edit fstab to mount /Resources
+    blockinfile:
+      path: /etc/fstab
+      when: not is_virtual_machine
+      block: |
+        UUID=2CFE46A1FE4662E6   /Resources    ntfs-3g uid=1000,gid=1000   0 0
+
+  - name: Mount /Resources
+    shell: sudo mount -a
+    when: not is_virtual_machine
+
+
+
+
+
