@@ -282,7 +282,6 @@
           tags:
             - grub-mkconfig
 
-
         - name: Install grub Theme - Cyberpunk
           ansible.posix.synchronize:
             src: "{{current_dir.stdout}}/Cyberpunk"
