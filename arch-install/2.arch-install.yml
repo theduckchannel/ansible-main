@@ -126,9 +126,6 @@
       name: 
         - linux-tkg-cacule
         - linux-tkg-cacule-headers
-        - nvidia-dkms
-        - nvidia-utils 
-        - nvidia-settings
         - grub-customizer
         - bspwm
         - sxhkd
