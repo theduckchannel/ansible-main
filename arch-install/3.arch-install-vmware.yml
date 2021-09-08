@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+  - name: Find Current Dir 
+    shell: pwd
+    register: current_dir
+  - debug: var=current_dir.stdout
+
+  - name: Get Username 
+    shell: whoami
+    register: username
+  - debug: var=username.stdout
+   
+
+
