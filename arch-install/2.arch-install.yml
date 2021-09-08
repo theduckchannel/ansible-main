@@ -116,7 +116,7 @@
       follow: no
 
 
-  - name: Install Kernel TKG Cacule
+  - name: Install Serveral Packages
     kewlfft.aur.aur:
       name: 
         - linux-tkg-cacule
