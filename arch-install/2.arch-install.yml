@@ -215,14 +215,14 @@
   - name: /etc/lxdm/lxdm.conf (autologin)
     ansible.builtin.lineinfile:
       path: /etc/lxdm/lxdm.conf
-      regexp: '^#autologin.*'
+      regexp: '^# autologin=.*'
       line: "autologin={{username.stdout}}"
 
 
   - name: /etc/lxdm/lxdm.conf (numlock)
     ansible.builtin.lineinfile:
       path: /etc/lxdm/lxdm.conf
-      regexp: '^#numlock=.*'
+      regexp: '^# numlock=.*'
       line: "numlock=1"
 
 
