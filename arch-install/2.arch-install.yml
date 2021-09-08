@@ -201,6 +201,7 @@
         - powerline-fonts
         - noto-color-emoji-fontconfig
         - xtitle
+        - file-roller
       use: paru
       state: present
     become: yes
