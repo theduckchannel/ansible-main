@@ -249,7 +249,7 @@
       enabled: yes
 
 
-  - name: Config ntp
+  - name: Config /.snapshots subvolume
     shell: |
       sudo umount /.snapshots
       sudo rm -rf /.snapshots
