@@ -13,6 +13,37 @@
     register: username
   - debug: var=username.stdout
    
+  - name: Install Oficial vmware-tools
+    shell: |
+      git clone https://github.com/rasa/vmware-tools-patches.git
+      cd vmware-tools-patches
+      sudo ./patched-open-vm-tools.sh
+      cd ..
+      sudo rm -rf vmware-tools-patches
+      sudo pacman -S asp
+      asp checkout open-vm-tools
+      cd open-vmtools/repos/community-x86_64/
+      makepkg -s --asdeps
+      sudo cp vm* /usr/lib/systemd/system
+      sudo systemctl enable vmware-vmblock-fuse
+      sudo systemctl enable vmtoolsd
+
+  - name: Enable vmware-vmblock-fuse
+    ansible.builtin.systemd:
+      name: vmware-vmblock-fuse.service
+      state: started
+      enabled: yes
+
+  - name: Enable vmtoolsd
+    ansible.builtin.systemd:
+      name: vmtoolsd.service
+      state: started
+      enabled: yes
 
 
+
+  - name: Clear Directories
+    shell: |
+      cd "{{current_dir.stdout}}"
+      rm -rf open-vmtools
 
