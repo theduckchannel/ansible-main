@@ -1,8 +1,6 @@
 ---
 - hosts: localhost
   become: yes
-  vars:
-    is_virtual_machine: true
   tasks:
   - name: Find Current Dir 
     shell: pwd
@@ -94,7 +92,6 @@
       name: cronie.service
       state: started
       enabled: yes
-      when: not is_virtual_machine
 
   - name: Config ntp
     shell: |
@@ -118,7 +115,6 @@
       src: "{{current_dir.stdout}}/blacklist_i2c-nvidia-gpu.conf"
       dest: /etc/modprobe.d/
       follow: no
-      when: not is_virtual_machine
 
 
   - name: Install Serveral Packages
@@ -225,7 +221,6 @@
       state: present
     become: yes
     become_user: aur_builder
-    when: not is_virtual_machine
 
 
   - name: /etc/lxdm/lxdm.conf (autologin)
@@ -332,13 +327,11 @@
   - name: Edit fstab to mount /Resources
     blockinfile:
       path: /etc/fstab
-      when: not is_virtual_machine
       block: |
         UUID=2CFE46A1FE4662E6   /Resources    ntfs-3g uid=1000,gid=1000   0 0
 
   - name: Mount /Resources
     shell: sudo mount -a
-    when: not is_virtual_machine
 
 
 
