@@ -286,7 +286,7 @@
 
         - name: Inserte os-prober line to grub
           blockinfile:
-            path: /etc/default/grub
+            path: /mnt/etc/default/grub
             block: |
               GRUB_DISABLE_OS_PROBER=false
 
