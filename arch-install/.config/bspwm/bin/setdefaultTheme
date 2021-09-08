@@ -1,5 +1,0 @@
-#!/bin/bash
-
-DIR="$HOME/.config/bspwm"
-BSP="$HOME/.config/bspwm/themes"
-bash ${BSP}/set-theme  'cyberpunk.jpg' 'cyberpunk' 'Cyberpunk' 'Archcraft-Dark' 'Arc-Cursor-Cyan'
