@@ -1,5 +1,9 @@
 ---
 - hosts: localhost
+  vars_prompt:
+  - name: "ansible_become_pass"
+    prompt: "Sudo password"
+    private: yes  
   become: yes
   tasks:
   - name: Find Current Dir 
