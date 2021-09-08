@@ -8,9 +8,11 @@
   - debug: var=current_dir.stdout
 
   - name: Get Username 
+    become: false
     shell: whoami
     register: username
   - debug: var=username.stdout
    
+
 
 
