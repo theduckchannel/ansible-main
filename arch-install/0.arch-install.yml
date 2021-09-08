@@ -291,11 +291,6 @@
               GRUB_DISABLE_OS_PROBER=false
 
 
-        - name: Install grub Theme - Cyberpunk
-          ansible.posix.synchronize:
-            src: "{{current_dir.stdout}}/Cyberpunk"
-            dest: /mnt/boot/grub/themes/
-              
         - name: Install grub
           shell: "{{chroot}} grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB"
           tags:
@@ -308,5 +303,20 @@
             - grub-mkconfig
 
 
+        - name: Install grub Theme - Cyberpunk
+          ansible.posix.synchronize:
+            src: "{{current_dir.stdout}}/Cyberpunk"
+            dest: /mnt/boot/grub/themes/
+             
 
+        - name: /etc/default/grub (Theme)
+          ansible.builtin.lineinfile:
+            path: /mnt/etc/default/grub
+            regexp: '^#GRUB_THEME.*'
+            line: '#GRUB_THEME="/boot/grub/themes/Cyberpunk/theme.txt"'
+
+        - name: Update grub
+          shell: "{{chroot}} grub-mkconfig -o /boot/grub/grub.cfg"
+          tags:
+            - grub-mkconfig
 
