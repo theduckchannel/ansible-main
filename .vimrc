@@ -54,6 +54,7 @@ Plug 'ajorgensen/vim-markdown-toc'
 Plug 'gabrielelana/vim-markdown'
 Plug 'pearofducks/ansible-vim'
 Plug 'gmarik/ingretu'
+Plug 'agude/vim-eldar'
 
 
 if isdirectory('/usr/local/opt/fzf')
@@ -198,7 +199,7 @@ set ruler
 set number
 
 let no_buffers_menu=1
-colorscheme ingretu
+colorscheme eldar
 
 
 set mousemodel=popup
