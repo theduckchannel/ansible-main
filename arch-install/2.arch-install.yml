@@ -191,11 +191,6 @@
         - ulauncher
         - google-chrome
         - chroma-bin
-        - vifm-git
-        - vifmimg-git
-        - vifm-colors-git
-        - vifm-devicons-git
-        - vim-vifm-git
         - kotatogram-desktop-bin
         - megasync 
         - snapper
@@ -205,6 +200,7 @@
         - noto-fonts-emoji
         - powerline-fonts
         - noto-color-emoji-fontconfig
+        - xtitle
       use: paru
       state: present
     become: yes
