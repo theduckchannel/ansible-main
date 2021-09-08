@@ -53,6 +53,7 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'ajorgensen/vim-markdown-toc'
 Plug 'gabrielelana/vim-markdown'
 Plug 'pearofducks/ansible-vim'
+Plug 'gmarik/ingretu'
 
 
 if isdirectory('/usr/local/opt/fzf')
@@ -197,7 +198,7 @@ set ruler
 set number
 
 let no_buffers_menu=1
-colorscheme dracula
+colorscheme ingretu
 
 
 set mousemodel=popup
@@ -265,7 +266,7 @@ if exists("*fugitive#statusline")
 endif
 
 " vim-airline
-let g:airline_theme = 'powerlineish'
+let g:airline_theme = 'wowbat'
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
