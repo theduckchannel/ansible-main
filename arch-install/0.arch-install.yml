@@ -254,7 +254,7 @@
           ansible.builtin.lineinfile:
             path: /mnt/etc/default/grub
             regexp: '^GRUB_CMDLINE_LINUX_DEFAULT=.*'
-            line: 'GRUB_CMDLINE_LINUX_DEFAULT=""'
+            line: 'GRUB_CMDLINE_LINUX_DEFAULT="nvme_core.default_ps_max_latency_us=0"'
              
 
         - name: /etc/default/grub (5)
