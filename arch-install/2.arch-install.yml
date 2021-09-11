@@ -202,6 +202,8 @@
         - noto-color-emoji-fontconfig
         - xtitle
         - file-roller
+        - ufw
+        - gufw
       use: paru
       state: present
     become: yes
@@ -313,6 +315,11 @@
   - name: First Snapshot
     shell: snapper -c root create --description "Fresh Install"
 
+  - name: Enable ufw
+    ansible.builtin.systemd:
+      name: ufw.service
+      state: started
+      enabled: yes
 
   - name: Create Resources Dir
     shell: |
