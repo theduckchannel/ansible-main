@@ -204,6 +204,7 @@
         - file-roller
         - ufw
         - gufw
+        - chaotic-aur/c-lolcat
       use: paru
       state: present
     become: yes
