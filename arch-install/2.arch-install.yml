@@ -206,6 +206,13 @@
         - gufw
         - chaotic-aur/c-lolcat
         - copyq
+        - ack
+        - ctags
+        - python-pynvim
+        - flake8
+        - python-pylint
+        - python-isort
+        - neovim
       use: paru
       state: present
     become: yes
