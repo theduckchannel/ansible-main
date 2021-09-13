@@ -213,6 +213,7 @@
         - python-pylint
         - python-isort
         - neovim
+        - python-jedi
       use: paru
       state: present
     become: yes
