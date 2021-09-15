@@ -282,9 +282,9 @@
           tags:
             - grub-mkconfig
 
-        - name: Install grub Theme - Cyberpunk
+        - name: Install grub Theme - Vimix
           ansible.posix.synchronize:
-            src: "{{current_dir.stdout}}/Cyberpunk"
+            src: "{{current_dir.stdout}}/Vimix"
             dest: /mnt/boot/grub/themes/
              
 
@@ -292,7 +292,7 @@
           ansible.builtin.lineinfile:
             path: /mnt/etc/default/grub
             regexp: '^#GRUB_THEME.*'
-            line: 'GRUB_THEME="/boot/grub/themes/Cyberpunk/theme.txt"'
+            line: 'GRUB_THEME="/boot/grub/themes/Vimix/theme.txt"'
 
         - name: Update grub
           shell: "{{chroot}} grub-mkconfig -o /boot/grub/grub.cfg"
