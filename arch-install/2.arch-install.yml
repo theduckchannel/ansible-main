@@ -72,7 +72,7 @@
     ansible.builtin.lineinfile:
       path: /etc/default/zramd
       regexp: '^# MAX_SIZE=8192'
-      line: 'MAX_SIZE=512'
+      line: 'MAX_SIZE=8192'
 
   - name: /etc/default/zramd (3)
     ansible.builtin.lineinfile:
