@@ -214,6 +214,8 @@
         - python-isort
         - neovim
         - python-jedi
+        - net-tools
+        - cpufetch-git
       use: paru
       state: present
     become: yes
