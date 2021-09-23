@@ -1,0 +1,39 @@
+---
+- hosts: localhost
+  vars: 
+      resources_uuid: "/dev/sda"
+      windows_uuid: "/dev/sda1"
+  become: yes
+  tasks:
+  - name: Find Current Dir 
+    shell: pwd
+    register: current_dir
+  - debug: var=current_dir.stdout
+
+  - name: Get Username 
+    become: no
+    shell: whoami
+    register: username
+  - debug: var=username.stdout
+   
+  - name: Create Resources and Windows directories
+    shell: |
+      sudo mkdir /Resources
+      sudo chmod a+rw /Resources
+      sudo chown :wheel /Resources
+      sudo mkdir /Windows
+      sudo chmod a+rw /Resources
+      sudo chown :wheel /Resources
+      ln -s /Resources /home/theduckchannel/Resources
+      ln -s /Windows /home/theduckchannel/Windows
+
+  - name: Edit fstab to mount /Resources and Windows
+    blockinfile:
+      path: /etc/fstab
+      block: |
+        UUID="{{resources_uuid}}"   /Resources    ntfs-3g uid=1000,gid=1000   0 0
+        UUID="{{windows_uuid}}"   /Windows    ntfs-3g uid=1000,gid=1000   0 0
+
+  - name: Mount /Resources and Windows
+    shell: sudo mount -a
+
