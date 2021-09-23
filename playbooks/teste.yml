@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+  - name: Find Resources UUID
+    shell: blkid /dev/sda1 --output value|sed -n 3p
+    register: resources_uuid
+  - debug: var=resources_uuid.stdout
+
+  - name: Get Username 
+    become: no
+    shell: whoami
+    register: username
+  - debug: var=username.stdout
+
