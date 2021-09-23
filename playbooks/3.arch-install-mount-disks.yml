@@ -1,39 +1,46 @@
 ---
 - hosts: localhost
-  vars: 
-      resources_uuid: "/dev/sda"
-      windows_uuid: "/dev/sda1"
   become: yes
+  vars:
+    resources_partition: "/dev/sda1"
+    windows_partition: "/dev/nvme0n1p3"
   tasks:
-  - name: Find Current Dir 
-    shell: pwd
-    register: current_dir
-  - debug: var=current_dir.stdout
+  - name: Find Resources UUID
+    shell: blkid "{{resources_partition}}" --output value|sed -n 3p
+    register: resources_uuid
+  - debug: var=resources_uuid.stdout
+
+  - name: Find Windows UUID
+    shell: sudo blkid {{windows_partition}} --output value|sed -n 2p
+    register: windows_uuid
+  - debug: var=windows_uuid.stdout
 
   - name: Get Username 
     become: no
     shell: whoami
     register: username
   - debug: var=username.stdout
-   
+
+
   - name: Create Resources and Windows directories
     shell: |
-      sudo mkdir /Resources
-      sudo chmod a+rw /Resources
-      sudo chown :wheel /Resources
-      sudo mkdir /Windows
-      sudo chmod a+rw /Resources
-      sudo chown :wheel /Resources
-      ln -s /Resources /home/theduckchannel/Resources
-      ln -s /Windows /home/theduckchannel/Windows
+      mkdir /Resources
+      chmod a+rw /Resources
+      chown :wheel /Resources
+      mkdir /Windows
+      chmod a+rw /Resources
+      chown :wheel /Resources
+      ln -s /Resources /home/"{{username.stdout}}"/Resources
+      ln -s /Windows /home/"{{username.stdout}}"/Windows
+
 
   - name: Edit fstab to mount /Resources and Windows
     blockinfile:
       path: /etc/fstab
       block: |
-        UUID="{{resources_uuid}}"   /Resources    ntfs-3g uid=1000,gid=1000   0 0
-        UUID="{{windows_uuid}}"   /Windows    ntfs-3g uid=1000,gid=1000   0 0
+        UUID="{{resources_uuid.stdout}}"   /Resources    ntfs-3g uid=1000,gid=1000   0 0
+        UUID="{{windows_uuid.stdout}}"   /Windows    ntfs-3g uid=1000,gid=1000   0 0
 
-  - name: Mount /Resources and Windows
+  - name: Mount /Resources and /Windows
     shell: sudo mount -a
 

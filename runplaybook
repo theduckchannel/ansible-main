@@ -1,4 +1,4 @@
 #!/bin/bash
 
 echo "runnning playbook $1"
-ansible-playbook -vvv --connection=local --inventory 127.0.0.1, $1
+ansible-playbook -vv --connection=local --inventory 127.0.0.1, $1
