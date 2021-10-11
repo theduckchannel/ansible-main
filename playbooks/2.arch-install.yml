@@ -120,8 +120,8 @@
   - name: Install Serveral Packages
     kewlfft.aur.aur:
       name: 
-        - linux-tkg-muqss
-        - linux-tkg-muqss-headers
+        - linux-tkg-cfs-generic_v3
+        - linux-tkg-cfs-generic_v3-headers
         - grub-customizer
         - bspwm
         - sxhkd
