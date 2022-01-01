@@ -188,7 +188,7 @@
         - polybar
         - i3lock-color
         - xfce-polkit
-        - ulauncher
+        - ulauncher-git
         - google-chrome
         - chroma-bin
         - kotatogram-desktop-bin
